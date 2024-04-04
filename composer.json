@@ -1,0 +1,17 @@
+{
+    "name": "victor-opusculo/my-orm",
+    "description": "ORM simples para apps PHP usando conexões com bancos MySQL/MariaDB através do driver mysqli.",
+    "type": "library",
+    "license": "MIT",
+    "autoload": {
+        "psr-4": {
+            "VictorOpusculo\\MyOrm\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Victor Opusculo"
+        }
+    ],
+    "require": {}
+}
