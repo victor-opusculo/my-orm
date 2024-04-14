@@ -2,6 +2,9 @@
 
 namespace VictorOpusculo\MyOrm;
 
+/**
+ * @template T
+ */
 abstract class Option 
 {
     protected function __construct(mixed $value)
@@ -9,8 +12,10 @@ abstract class Option
         $this->value = $value;
     }
 
+	/** @var T */
     public readonly mixed $value;
 
+	/** @return T */
 	public function unwrap() : mixed
 	{
 		if (!isset($this->value))
@@ -19,6 +24,7 @@ abstract class Option
 		return $this->value;
 	}
 	
+	/** @return T|mixed */
 	public function unwrapOr(mixed $alternativeValue) : mixed
 	{
 		if (!isset($this->value))
@@ -27,6 +33,7 @@ abstract class Option
 		return $this->value;
 	}
 	
+	/** @return T|mixed */
 	public function unwrapOrElse(callable $func) : mixed
 	{
 		if (!isset($this->value))

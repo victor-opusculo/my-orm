@@ -25,6 +25,9 @@ function has_string_keys(array $array)
 	return count(array_filter(array_keys($array), 'is_string')) > 0;
 }
 
+/** 
+ * @template T
+ */
 class DataProperty implements \JsonSerializable
 {
 	public const MYSQL_STRING = 's';
@@ -36,6 +39,7 @@ class DataProperty implements \JsonSerializable
 	private ?string $formFieldIdentifierName;
 	private Closure $defaultValueClosure;
 	private bool $encrypt = false;
+	/** @var Option<T> */
 	private Option $value;
 	
 	public $valueTransformer;  
@@ -150,8 +154,13 @@ class DataProperty implements \JsonSerializable
 	}
 }
 
+/**
+ * @template P
+ * @extends DataProperty<P>
+ */
 class DataObjectProperty extends DataProperty implements \IteratorAggregate
 {
+	/** @var P */
 	private object $properties;
 	
 	public function __construct(?object $subProperties, bool $encrypt = false)
@@ -187,7 +196,7 @@ class DataObjectProperty extends DataProperty implements \IteratorAggregate
 		return $output;
 	}
 
-	public function resetValue()
+	public function resetValue() : void
 	{
 		foreach ($this->properties as $po)
 			$po->resetValue();
@@ -198,6 +207,7 @@ class DataObjectProperty extends DataProperty implements \IteratorAggregate
 		return new \ArrayIterator($this->properties);
 	}
 	
+	/** @return Option<P> */
 	public function getValue() : Option
 	{
 		if (is_null($this->properties))
@@ -212,12 +222,12 @@ class DataObjectProperty extends DataProperty implements \IteratorAggregate
 		return $this->properties;
 	}
 
-	public function setNone()
+	public function setNone() : void
 	{
 		$this->properties = null;
 	}
 	
-	public function setValue($value)
+	public function setValue($value) : void
 	{
 		if ($obj = isJson($value))
 		{
